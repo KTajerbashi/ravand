@@ -1,0 +1,14 @@
+﻿global using Ravand.Core.Application.Common.BaseApplication.Mediator.Command;
+global using Ravand.Core.Application.Common.BaseApplication.Mediator.Query;
+global using Ravand.Core.Application.Common.BaseApplication.Models;
+global using Ravand.Core.Application.Common.Mapper;
+global using Ravand.Core.Application.Exceptions;
+global using Ravand.Core.Application.Providers;
+global using Ravand.Core.Application.Providers.ScrutorDI;
+global using AutoMapper;
+global using MediatR;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.DependencyModel;
+global using System.Reflection;
+global using ValidationException = FluentValidation.ValidationException;

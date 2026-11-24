@@ -1,0 +1,90 @@
+﻿using Ravand.EndPoint.WebApi.Configurations.Identity;
+using Ravand.EndPoint.WebApi.Controllers.Common;
+using Ravand.EndPoint.WebApi.Exceptions;
+using Ravand.EndPoint.WebApi.Models;
+using Ravand.EndPoint.WebApi.Providers.Identity.Interfaces;
+using Ravand.EndPoint.WebApi.Providers.UserState;
+using Ravand.Infra.Data.References;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Ravand.EndPoint.WebApi.Controllers.Identity;
+
+public sealed class AuthenticationController : BaseController
+{
+    private readonly IIdentityService _identityService;
+    public AuthenticationController(IIdentityService identityService)
+    {
+        _identityService = identityService;
+    }
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginRequest parameter)
+    {
+        try
+        {
+            var response = await _identityService.LoginAsSessionAsync(parameter.Username, parameter.Password, CancellationToken.None);
+            if (response.IsSuccess)
+            {
+                // 3️⃣ Store data in Session
+                HttpContext.Session.SetString(IdentityKeys.UserId, response.User.Id.ToString());
+                HttpContext.Session.SetString(IdentityKeys.RoleId, response.Role.Id.ToString());
+                HttpContext.Session.SetString(IdentityKeys.UserRoleId, response.UserRole.Id.ToString());
+                HttpContext.Session.SetString(IdentityKeys.DisplayName, response.User.DisplayName);
+                HttpContext.Session.SetString(IdentityKeys.UserName, response.User.UserName);
+                HttpContext.Session.SetString(IdentityKeys.Email, response.User.Email);
+                HttpContext.Session.SetString(IdentityKeys.Phone, response.User.PhoneNumber);
+                //HttpContext.Session.SetString(IdentityKeys.NationalCode, response.User.);
+                //HttpContext.Session.SetString(IdentityKeys.ApplicationState, response.Id.ToString());
+                HttpContext.Session.SetString(IdentityKeys.UserRoles, $"{response.UserRoles.Select(x => x.Id).ToArray()}");
+                //HttpContext.Session.SetString(IdentityKeys.Groups, response.Id.ToString());
+                //HttpContext.Session.SetString(IdentityKeys.State, response.Id.ToString());
+
+                var roles = response.Roles.Select(r => r.Name).ToArray();
+                HttpContext.Session.SetString(IdentityKeys.UserRoles, string.Join(",", roles));
+                return Ok(response);
+            }
+            else
+            {
+                return BadRequest(response.Message);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex.ThrowApiException();
+        }
+    }
+    [HttpPost("logout")]
+    public IActionResult Logout()
+    {
+        HttpContext.Session.Clear();
+        return Ok("Logged out (Session cleared)");
+    }
+
+    [HttpGet("me")]
+    public IActionResult Me()
+    {
+        var userId = ProviderServices.UserState.UserId;
+
+        if (!userId.HasValue)
+            return Unauthorized("Not logged in");
+
+        return Ok(new
+        {
+            UserInfo = ProviderServices.UserState,
+            //Roles = HttpContext.Session.GetString(IdentityKeys.UserRoles)?.Split(',')
+        });
+    }
+
+    [HttpGet("admin-data")]
+    public IActionResult AdminOnly()
+    {
+        var roles = HttpContext.Session
+            .GetString(IdentityKeys.UserRoles)?
+            .Split(',') ?? Array.Empty<string>();
+
+        if (!roles.Contains(RolesReference.Admin))
+            return Forbid();
+
+        return Ok("Welcome Admin");
+    }
+
+}

@@ -1,7 +1,7 @@
 services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: angularapp-sqlserver
+    container_name: ravand-sqlserver
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "YourStrong@Passw0rd"
@@ -19,13 +19,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: angularapp-webapp
+    container_name: ravand-webapp
     depends_on:
       sqlserver:
         condition: service_healthy
     environment:
       ASPNETCORE_ENVIRONMENT: Production
-      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=AngularAppDb;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=RavandDb;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True"
     ports:
       - "8080:8080"
 
