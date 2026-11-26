@@ -15,7 +15,12 @@ const PROXY_CONFIG = [
       "/swagger",   // Swagger UI
       "/openapi",   // OpenAPI JSON (خروجی MapOpenApi)
       "/health",    // MapDefaultEndpoints (health checks)
-      "/alive"
+      "/alive",
+      "/lib",
+      "/css",
+      "/js",
+      "/_framework",
+      "/Ravand.EndPoint.WebApp.wwwroot.css"
     ],
     target: target,
     secure: false,          // گواهی توسعه (self-signed) را قبول کند

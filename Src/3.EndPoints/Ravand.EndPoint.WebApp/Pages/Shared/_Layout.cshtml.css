@@ -1,48 +1,235 @@
-﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
+﻿
+/* =========================================
+   Ravand Layout
+   CSS Isolation
+========================================= */
 
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+
+/* Header
+========================================= */
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    background: rgba(255, 255, 255, 0.94);
+    border-bottom: 1px solid var(--color-border);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
-a {
-  color: #0077cc;
+    .site-header .navbar {
+        min-height: 76px;
+        padding: 12px 0;
+    }
+
+
+    /* Brand
+========================================= */
+
+    .site-header .navbar-brand,
+    .footer-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0;
+        margin: 0;
+        color: var(--color-dark);
+        text-decoration: none;
+        font-size: 21px;
+        font-weight: 750;
+        letter-spacing: -0.8px;
+    }
+
+.brand-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: 11px;
+    background: var(--color-primary);
+    color: #fff;
+    font-size: 21px;
+    font-weight: 800;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.brand-name {
+    color: var(--color-dark);
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+
+/* Navigation
+========================================= */
+
+.site-header .navbar-nav {
+    gap: 8px;
 }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+    .site-header .navbar-nav .nav-link {
+        padding: 9px 15px;
+        border-radius: var(--radius-sm);
+        color: var(--color-text);
+        font-size: 14px;
+        font-weight: 600;
+        transition: var(--transition);
+    }
+
+        .site-header .navbar-nav .nav-link:hover,
+        .site-header .navbar-nav .nav-link.active {
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+        }
+
+
+/* Navbar Toggler
+========================================= */
+
+.site-header .navbar-toggler {
+    padding: 8px 10px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    box-shadow: none;
 }
 
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    .site-header .navbar-toggler:focus {
+        box-shadow: 0 0 0 3px var(--color-focus);
+    }
+
+
+/* Identity Actions
+========================================= */
+
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+    .navbar-actions .navbar-nav {
+        align-items: center;
+    }
+
+    .navbar-actions .nav-link {
+        color: var(--color-text);
+        font-weight: 600;
+    }
+
+    .navbar-actions .btn {
+        white-space: nowrap;
+    }
+
+
+/* Main Content
+========================================= */
+
+.site-main {
+    flex: 1 0 auto;
+    width: 100%;
+    padding-top: 40px;
+    padding-bottom: 60px;
 }
 
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
+
+/* Footer
+========================================= */
+
+.site-footer {
+    flex-shrink: 0;
+    width: 100%;
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+}
+
+.footer-content {
+    padding: 32px 0 20px;
+}
+
+.footer-main {
+    margin-bottom: 24px;
+}
+
+.footer-brand {
+    margin-bottom: 12px;
+}
+
+.footer-description {
+    margin: 0;
+    color: var(--color-text);
+    font-size: 14px;
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text);
+    font-size: 13px;
+}
+
+.footer-link {
+    color: var(--color-text);
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+    .footer-link:hover {
+        color: var(--color-primary);
+    }
+
+
+/* Responsive
+========================================= */
+
+@media (max-width: 991.98px) {
+
+    .site-header .navbar-collapse {
+        padding: 18px 0 8px;
+    }
+
+    .site-header .navbar-nav {
+        gap: 4px;
+    }
+
+        .site-header .navbar-nav .nav-link {
+            padding: 10px 12px;
+        }
+
+    .navbar-actions {
+        padding-top: 12px;
+        margin-top: 12px;
+        border-top: 1px solid var(--color-border);
+    }
+
+        .navbar-actions .navbar-nav {
+            align-items: flex-start;
+        }
+}
+
+
+@media (max-width: 575.98px) {
+
+    .site-header .navbar {
+        min-height: 66px;
+    }
+
+    .site-main {
+        padding-top: 24px;
+        padding-bottom: 40px;
+    }
+
+    .footer-content {
+        padding-top: 24px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
